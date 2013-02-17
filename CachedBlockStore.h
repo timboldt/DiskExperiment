@@ -3,17 +3,20 @@
  * Author: timboldt
  *
  * Created on February 16, 2013, 8:08 PM
+ * 
+ * This module implements a simple read-only block cache, using a combination of a 
  */
 
 #ifndef CACHEDBLOCKSTORE_H
 #define	CACHEDBLOCKSTORE_H
 
+//#include <cstdint>
+#include <cstddef>
 #include <list>
-#include <map>
+#include <tr1/unordered_map>
 #include <vector>
 
 const size_t BLOCK_SIZE = 4096;
-const size_t MAX_BLOCKS_IN_CACHE = 1000;
 
 typedef unsigned char Byte;
 typedef int64_t BlockId_t;
@@ -28,14 +31,14 @@ public:
     BlockId_t blockId;
     Byte * blockPtr;
 };
-typedef std::map <BlockId_t, BlockInfo *> BlockMap;
-typedef std::map <BlockId_t, BlockInfo *>::iterator BlockMapIterator;
-
+typedef std::tr1::unordered_map <BlockId_t, BlockInfo *> BlockMap;
+typedef std::tr1::unordered_map <BlockId_t, BlockInfo *>::iterator BlockMapIterator;
 typedef std::list <BlockInfo *> BlockList;
 
+// TODO: implement this as a derived class of a block-oriented I/O class
 class CachedBlockStore {
 public:
-    CachedBlockStore();
+    CachedBlockStore(size_t blocksInCache);
     virtual ~CachedBlockStore();
     
     const Byte * getBlock(BlockId_t blockId);
@@ -47,6 +50,7 @@ private:
 private:
     BlockList blockList;
     BlockMap blockMap;
+    size_t maxBlocksInCache;
 };
 
 #endif	/* CACHEDBLOCKSTORE_H */

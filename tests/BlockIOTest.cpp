@@ -25,7 +25,8 @@ void BlockIOTest::tearDown() {
 }
 
 void BlockIOTest::testGetBlock() {
-    CachedBlockStore cache;
+    const int MAX_BLOCKS_IN_CACHE = 100;
+    CachedBlockStore cache(MAX_BLOCKS_IN_CACHE);
     
     const Byte * block;
     
@@ -48,9 +49,9 @@ void BlockIOTest::testGetBlock() {
     }
     CPPUNIT_ASSERT(cache.hasBlock(12345) == true);
     CPPUNIT_ASSERT(cache.hasBlock(9999) == false);
-    cache.getBlock(500);
+    cache.getBlock(MAX_BLOCKS_IN_CACHE/2);
     CPPUNIT_ASSERT(cache.hasBlock(12345) == true);
-    cache.getBlock(1000);
+    cache.getBlock(MAX_BLOCKS_IN_CACHE);
     CPPUNIT_ASSERT(cache.hasBlock(12345) == false);
 }
 

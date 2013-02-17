@@ -10,10 +10,12 @@
 #include <cstdio>
 #include <cstring>
 
-CachedBlockStore::CachedBlockStore() {
+CachedBlockStore::CachedBlockStore(size_t blocksInCache) {
+    maxBlocksInCache = blocksInCache;
 }
 
 CachedBlockStore::~CachedBlockStore() {
+    //TODO: Deallocate the cache
 }
 
 const Byte * CachedBlockStore::getBlock(BlockId_t blockId)
@@ -42,7 +44,7 @@ bool CachedBlockStore::hasBlock(BlockId_t blockId)
 const Byte * CachedBlockStore::loadBlock(BlockId_t blockId)
 {    
     // Eject a block to make room in the cache
-    while (blockList.size() >= MAX_BLOCKS_IN_CACHE) {
+    while (blockList.size() >= maxBlocksInCache) {
         
         // Remove the last block in the list
         BlockInfo * blockInfo = blockList.back();        
@@ -57,6 +59,8 @@ const Byte * CachedBlockStore::loadBlock(BlockId_t blockId)
     }
 
     // Simulate a block read and mark it with the block id for verification purposes
+    // TODO: read from a block device
+    // TODO: align blocks on memory pages
     Byte * data = new Byte[BLOCK_SIZE];    
     memset(data, '*', BLOCK_SIZE);
     sprintf((char *)data, "%lld", blockId);
