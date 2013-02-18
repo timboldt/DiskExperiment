@@ -12,8 +12,12 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>AbstractBlockStore.cpp</itemPath>
+      <itemPath>AbstractBlockStore.h</itemPath>
       <itemPath>CachedBlockStore.cpp</itemPath>
       <itemPath>CachedBlockStore.h</itemPath>
+      <itemPath>DirectBlockFile.cpp</itemPath>
+      <itemPath>DirectBlockFile.h</itemPath>
       <itemPath>KeyValueDB.cpp</itemPath>
       <itemPath>KeyValueDB.h</itemPath>
       <itemPath>main.cpp</itemPath>

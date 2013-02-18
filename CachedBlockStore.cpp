@@ -8,10 +8,8 @@
 #include <cstdio>
 #include <cstring>
 #include <cstddef>
-#include <list>
-#include <tr1/unordered_map>
-#include <vector>
 
+#include "AbstractBlockStore.h"
 #include "CachedBlockStore.h"
 
 
@@ -23,7 +21,7 @@ CachedBlockStore::~CachedBlockStore() {
     //TODO: Deallocate the cache
 }
 
-const Byte * CachedBlockStore::getBlock(BlockId_t blockId)
+Byte * CachedBlockStore::getBlock(BlockId_t blockId)
 {
     BlockMapIterator iter = blockMap.find(blockId);
     if (iter == blockMap.end()) {
@@ -40,13 +38,23 @@ const Byte * CachedBlockStore::getBlock(BlockId_t blockId)
     }
 }
 
+void CachedBlockStore::updateBlock(BlockId_t blockId, const Byte * data)
+{
+    throw new std::string("not implemented yet");
+}
+
+BlockId_t CachedBlockStore::appendBlock(const Byte * data)
+{
+    throw new std::string("not implemented yet");    
+}
+
 bool CachedBlockStore::hasBlock(BlockId_t blockId)
 {
     BlockMapIterator iter = blockMap.find(blockId);
     return (iter != blockMap.end());
 }
 
-const Byte * CachedBlockStore::loadBlock(BlockId_t blockId)
+Byte * CachedBlockStore::loadBlock(BlockId_t blockId)
 {    
     // Eject a block to make room in the cache
     while (blockList.size() >= maxBlocksInCache) {

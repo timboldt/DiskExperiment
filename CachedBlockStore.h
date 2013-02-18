@@ -10,36 +10,24 @@
 #ifndef CACHEDBLOCKSTORE_H
 #define	CACHEDBLOCKSTORE_H
 
-const size_t BLOCK_SIZE = 4096;
+#include "AbstractBlockStore.h"
 
-typedef unsigned char Byte;
-typedef int64_t BlockId_t;
 
-class BlockInfo {
-public:
-    BlockInfo(BlockId_t blockId_p, Byte * blockPtr_p) {
-        blockId = blockId_p;
-        blockPtr = blockPtr_p;
-    }
-    
-    BlockId_t blockId;
-    Byte * blockPtr;
-};
-typedef std::tr1::unordered_map <BlockId_t, BlockInfo *> BlockMap;
-typedef std::tr1::unordered_map <BlockId_t, BlockInfo *>::iterator BlockMapIterator;
-typedef std::list <BlockInfo *> BlockList;
 
 // TODO: implement this as a derived class of a block-oriented I/O class
-class CachedBlockStore {
+class CachedBlockStore : public AbstractBlockStore {
 public:
     CachedBlockStore(size_t blocksInCache);
     virtual ~CachedBlockStore();
     
-    const Byte * getBlock(BlockId_t blockId);
+    virtual Byte * getBlock(BlockId_t blockId);
+    virtual void updateBlock(BlockId_t blockId, const Byte * data);
+    virtual BlockId_t appendBlock(const Byte * data);
+
     bool hasBlock(BlockId_t blockId);
 
 private:    
-    const Byte * loadBlock(BlockId_t blockId);
+    Byte * loadBlock(BlockId_t blockId);
     
 private:
     BlockList blockList;

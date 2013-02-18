@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "BlockIOTest.h"
+#include "DirectBlockFile.h"
 #include "CachedBlockStore.h"
 
 
@@ -29,6 +30,35 @@ void BlockIOTest::setUp() {
 }
 
 void BlockIOTest::tearDown() {
+}
+
+void BlockIOTest::testDirectBlockFile()
+{
+    const char * tmpFileName = "/tmp/testDirectBlockFile";
+    
+    DirectBlockFile blockFile;
+    remove(tmpFileName);
+    blockFile.openFile(tmpFileName, true);
+    
+    Byte data[DirectBlockFile::BLOCK_SIZE];    
+    BlockId_t blockId = 999;
+    
+    sprintf((char *)data, "Block zero");
+    blockId = blockFile.appendBlock(data);
+    CPPUNIT_ASSERT(blockId == 0);
+    sprintf((char *)data, "Block one");
+    blockId = blockFile.appendBlock(data);
+    CPPUNIT_ASSERT(blockId == 1);
+    
+    Byte * input = NULL;
+
+    input = blockFile.getBlock(0);
+    CPPUNIT_ASSERT(strcmp((const char *)input, "Block zero") == 0);
+    delete [] input;
+
+    input = blockFile.getBlock(1);
+    CPPUNIT_ASSERT(strcmp((const char *)input, "Block one") == 0);
+    delete [] input;    
 }
 
 void BlockIOTest::testGetBlock() {

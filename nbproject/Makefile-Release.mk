@@ -35,7 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/AbstractBlockStore.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/DirectBlockFile.o \
 	${OBJECTDIR}/CachedBlockStore.o \
 	${OBJECTDIR}/KeyValueDB.o
 
@@ -71,10 +73,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/diskexperiment: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/diskexperiment ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/AbstractBlockStore.o: AbstractBlockStore.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/AbstractBlockStore.o AbstractBlockStore.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/DirectBlockFile.o: DirectBlockFile.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/DirectBlockFile.o DirectBlockFile.cpp
 
 ${OBJECTDIR}/CachedBlockStore.o: CachedBlockStore.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -124,6 +136,19 @@ ${TESTDIR}/tests/KeyValueTestRunner.o: tests/KeyValueTestRunner.cpp
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${TESTDIR}/tests/KeyValueTestRunner.o tests/KeyValueTestRunner.cpp
 
 
+${OBJECTDIR}/AbstractBlockStore_nomain.o: ${OBJECTDIR}/AbstractBlockStore.o AbstractBlockStore.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/AbstractBlockStore.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/AbstractBlockStore_nomain.o AbstractBlockStore.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/AbstractBlockStore.o ${OBJECTDIR}/AbstractBlockStore_nomain.o;\
+	fi
+
 ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/main.o`; \
@@ -135,6 +160,19 @@ ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/main_nomain.o main.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/main.o ${OBJECTDIR}/main_nomain.o;\
+	fi
+
+${OBJECTDIR}/DirectBlockFile_nomain.o: ${OBJECTDIR}/DirectBlockFile.o DirectBlockFile.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/DirectBlockFile.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/DirectBlockFile_nomain.o DirectBlockFile.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/DirectBlockFile.o ${OBJECTDIR}/DirectBlockFile_nomain.o;\
 	fi
 
 ${OBJECTDIR}/CachedBlockStore_nomain.o: ${OBJECTDIR}/CachedBlockStore.o CachedBlockStore.cpp 

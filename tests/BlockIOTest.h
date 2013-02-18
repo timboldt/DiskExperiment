@@ -13,6 +13,7 @@
 class BlockIOTest : public CPPUNIT_NS::TestFixture {
     CPPUNIT_TEST_SUITE(BlockIOTest);
 
+    CPPUNIT_TEST(testDirectBlockFile);
     CPPUNIT_TEST(testGetBlock);
 
     CPPUNIT_TEST_SUITE_END();
@@ -24,6 +25,8 @@ public:
     void tearDown();
 
 private:
+    void testDirectBlockFile();
+
     void testGetBlock();
 };
 
