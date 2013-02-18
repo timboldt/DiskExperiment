@@ -5,10 +5,15 @@
  * Created on February 16, 2013, 8:08 PM
  */
 
-#include "CachedBlockStore.h"
-
 #include <cstdio>
 #include <cstring>
+#include <cstddef>
+#include <list>
+#include <tr1/unordered_map>
+#include <vector>
+
+#include "CachedBlockStore.h"
+
 
 CachedBlockStore::CachedBlockStore(size_t blocksInCache) {
     maxBlocksInCache = blocksInCache;

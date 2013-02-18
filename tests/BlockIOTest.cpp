@@ -5,7 +5,14 @@
  * Created on Feb 16, 2013, 10:10:29 PM
  */
 
+#include <cstdio>
+#include <cstring>
+#include <cstddef>
+#include <list>
 #include <string>
+#include <tr1/unordered_map>
+#include <vector>
+
 #include "BlockIOTest.h"
 #include "CachedBlockStore.h"
 

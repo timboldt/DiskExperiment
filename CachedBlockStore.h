@@ -10,12 +10,6 @@
 #ifndef CACHEDBLOCKSTORE_H
 #define	CACHEDBLOCKSTORE_H
 
-//#include <cstdint>
-#include <cstddef>
-#include <list>
-#include <tr1/unordered_map>
-#include <vector>
-
 const size_t BLOCK_SIZE = 4096;
 
 typedef unsigned char Byte;

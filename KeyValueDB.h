@@ -8,9 +8,6 @@
 #ifndef KEYVALUEDB_H_
 #define KEYVALUEDB_H_
 
-#include <string>
-#include <map>
-
 class KeyValueDB {
 public:
     KeyValueDB(std::string fileName);
