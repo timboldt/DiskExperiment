@@ -37,6 +37,9 @@ void newtestclass1::testFailedMethod() {
  * Created on Feb 16, 2013, 3:36:56 PM
  */
 
+#include <exception>
+#include <stdexcept>
+
 #include "KeyValueTest.h"
 #include "KeyValueDB.h"
 
@@ -59,7 +62,7 @@ void KeyValueTest::tearDown() {
 void KeyValueTest::testOpen() {
     KeyValueDB keyValueDB(DB_FILE_NAME);
     keyValueDB.open();
-    CPPUNIT_ASSERT_THROW( keyValueDB.open(), std::string );
+    CPPUNIT_ASSERT_THROW( keyValueDB.open(), std::runtime_error );
     CPPUNIT_ASSERT(keyValueDB.isOpen() == true);
     keyValueDB.close();
 }
@@ -70,7 +73,7 @@ void KeyValueTest::testClose() {
     keyValueDB.open();
     keyValueDB.close();
     CPPUNIT_ASSERT(keyValueDB.isOpen() == false);
-    CPPUNIT_ASSERT_THROW( keyValueDB.close(), std::string );
+    CPPUNIT_ASSERT_THROW( keyValueDB.close(), std::runtime_error );
 }
 
 void KeyValueTest::testGetPutDel() {

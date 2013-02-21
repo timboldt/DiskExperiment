@@ -5,10 +5,12 @@
  *      Author: timboldt
  */
 
+#include <exception>
 #include <map>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdexcept>
 
 #include "KeyValueDB.h"
 
@@ -26,7 +28,7 @@ KeyValueDB::~KeyValueDB() {
 void KeyValueDB::open() {
     if (openFlag == true) {
         // TODO: replace with proper exception
-        throw std::string("Invalid operation: DB already open");
+        throw std::runtime_error("Invalid operation: DB already open");
     }
     kvMap.clear();
     
@@ -48,7 +50,7 @@ void KeyValueDB::open() {
 void KeyValueDB::close() {
     if (openFlag == false) {
         // TODO: replace with proper exception
-        throw std::string("Invalid operation: DB is not open");
+        throw std::runtime_error("Invalid operation: DB is not open");
     }
 
     // TODO: replace with proper block-based I/O and serialization structure
@@ -70,7 +72,7 @@ bool KeyValueDB::isOpen() {
 std::string KeyValueDB::get(std::string key) {
     if (openFlag == false) {
         // TODO: replace with proper exception
-        throw std::string("Invalid operation: DB is not open");
+        throw std::runtime_error("Invalid operation: DB is not open");
     }
     
     //TODO: don't assume block containing key is in RAM
@@ -81,7 +83,7 @@ std::string KeyValueDB::get(std::string key) {
 void KeyValueDB::put(std::string key, std::string value) {
     if (openFlag == false) {
         // TODO: replace with proper exception
-        throw std::string("Invalid operation: DB is not open");
+        throw std::runtime_error("Invalid operation: DB is not open");
     }
 
     //TODO: don't assume the all the data can be kept in RAM
@@ -92,7 +94,7 @@ void KeyValueDB::put(std::string key, std::string value) {
 void KeyValueDB::del(std::string key) {
     if (openFlag == false) {
         // TODO: replace with proper exception
-        throw std::string("Invalid operation: DB is not open");
+        throw std::runtime_error("Invalid operation: DB is not open");
     }
 
     //TODO: don't assume block containing key is in RAM
@@ -102,7 +104,7 @@ void KeyValueDB::del(std::string key) {
 void KeyValueDB::clearAll() {
     if (openFlag == false) {
         // TODO: replace with proper exception
-        throw std::string("Invalid operation: DB is not open");
+        throw std::runtime_error("Invalid operation: DB is not open");
     }
     this->kvMap.clear();
 }

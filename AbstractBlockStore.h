@@ -30,11 +30,11 @@ typedef std::tr1::unordered_map <BlockId_t, BlockInfo *> BlockMap;
 typedef std::tr1::unordered_map <BlockId_t, BlockInfo *>::iterator BlockMapIterator;
 typedef std::list <BlockInfo *> BlockList;
 
-
+//TODO: Ownership of block pointer is not very clear; find a way to do this in a safer way without
+//      sacrificing efficiency.
 class AbstractBlockStore {
 public:
     AbstractBlockStore();
-    AbstractBlockStore(const AbstractBlockStore& orig);
     virtual ~AbstractBlockStore();
     
     virtual Byte * getBlock(BlockId_t blockId) = 0;
@@ -44,6 +44,8 @@ public:
     static const size_t BLOCK_SIZE = 4096;
     
 private:
+    AbstractBlockStore( const AbstractBlockStore& rhs );
+    AbstractBlockStore& operator=( const AbstractBlockStore& rhs );
 
 };
 

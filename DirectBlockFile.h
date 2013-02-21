@@ -14,7 +14,6 @@
 class DirectBlockFile : public AbstractBlockStore {
 public:
     DirectBlockFile();
-    DirectBlockFile(const DirectBlockFile& orig);
     virtual ~DirectBlockFile();
     
     virtual void openFile(std::string fileName, bool createNew);
@@ -26,6 +25,8 @@ public:
 
     
 private:
+    DirectBlockFile( const DirectBlockFile& rhs );
+    DirectBlockFile& operator=( const DirectBlockFile& rhs );
     std::string getFileErrorMessage(const char * operation, int errNumber);
 
     std::string fileName;

@@ -10,9 +10,6 @@
 AbstractBlockStore::AbstractBlockStore() {
 }
 
-AbstractBlockStore::AbstractBlockStore(const AbstractBlockStore& orig) {
-}
-
 AbstractBlockStore::~AbstractBlockStore() {
 }
 

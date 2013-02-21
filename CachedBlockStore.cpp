@@ -8,6 +8,8 @@
 #include <cstdio>
 #include <cstring>
 #include <cstddef>
+#include <exception>
+#include <stdexcept>
 
 #include "AbstractBlockStore.h"
 #include "CachedBlockStore.h"
@@ -40,12 +42,12 @@ Byte * CachedBlockStore::getBlock(BlockId_t blockId)
 
 void CachedBlockStore::updateBlock(BlockId_t blockId, const Byte * data)
 {
-    throw new std::string("not implemented yet");
+    throw std::logic_error("not implemented yet");
 }
 
 BlockId_t CachedBlockStore::appendBlock(const Byte * data)
 {
-    throw new std::string("not implemented yet");    
+    throw std::logic_error("not implemented yet");    
 }
 
 bool CachedBlockStore::hasBlock(BlockId_t blockId)

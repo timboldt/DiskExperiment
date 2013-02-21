@@ -6,15 +6,14 @@
  */
 
 #include <errno.h>
+#include <exception>
 #include <fcntl.h>
 #include <sstream>
+#include <stdexcept>
 
 #include "DirectBlockFile.h"
 
 DirectBlockFile::DirectBlockFile() {
-}
-
-DirectBlockFile::DirectBlockFile(const DirectBlockFile& orig) {
 }
 
 DirectBlockFile::~DirectBlockFile() {
@@ -28,15 +27,15 @@ void DirectBlockFile::openFile(std::string nameOfFileToOpen, bool createNew) {
         fileFlags |= O_CREAT;
     }
 
-    // TODO: Make this code portable to Linux by using O_DIRECT there
+    // TODO: Make this code portable to Linux by using O_DIRECT on Linux platforms
     fileId = open(fileName.c_str(), fileFlags);
     if (fileId <= 0) {
         fileId = 0;
-        throw new std::string(getFileErrorMessage("Failed to open file.", errno));
+        throw std::runtime_error(getFileErrorMessage("Failed to open file.", errno));
     }
     int res = fcntl(fileId, F_NOCACHE, 1);
     if (res < 0) {
-        throw new std::string(getFileErrorMessage("fcntl failed.", errno));
+        throw std::runtime_error(getFileErrorMessage("fcntl failed.", errno));
     }
 }
 
@@ -46,7 +45,7 @@ void DirectBlockFile::closeFile() {
         fileId = 0;
 
         if (res < 0) {
-            throw new std::string(getFileErrorMessage("Failed to close file.", errno));
+            throw std::runtime_error(getFileErrorMessage("Failed to close file.", errno));
         }
     }
 }
@@ -56,7 +55,7 @@ Byte * DirectBlockFile::getBlock(BlockId_t blockId) {
 
     off_t offset = lseek(fileId, blockId * BLOCK_SIZE, SEEK_SET);
     if (offset < 0) {
-        throw new std::string(getFileErrorMessage("Seek failed.", errno));
+        throw std::runtime_error(getFileErrorMessage("Seek failed.", errno));
     }
     
     data = new Byte[BLOCK_SIZE];
@@ -64,7 +63,7 @@ Byte * DirectBlockFile::getBlock(BlockId_t blockId) {
     if (bytesRead <= 0) {
         delete [] data;
         data = NULL;
-        throw new std::string(getFileErrorMessage("Read failed.", errno));
+        throw std::runtime_error(getFileErrorMessage("Read failed.", errno));
     }
  
     return data;
@@ -73,7 +72,7 @@ Byte * DirectBlockFile::getBlock(BlockId_t blockId) {
 void DirectBlockFile::updateBlock(BlockId_t blockId, const Byte * data) {
     off_t offset = lseek(fileId, blockId * BLOCK_SIZE, SEEK_SET);
     if (offset < 0) {
-        throw new std::string(getFileErrorMessage("Seek failed.", errno));
+        throw std::runtime_error(getFileErrorMessage("Seek failed.", errno));
     }
     
     //TODO: write
@@ -82,12 +81,12 @@ void DirectBlockFile::updateBlock(BlockId_t blockId, const Byte * data) {
 BlockId_t DirectBlockFile::appendBlock(const Byte * data) {
     off_t offset = lseek(fileId, 0, SEEK_END);
     if (offset < 0) {
-        throw new std::string(getFileErrorMessage("Seek failed.", errno));
+        throw std::runtime_error(getFileErrorMessage("Seek failed.", errno));
     }
     
     ssize_t written = write(fileId, data, BLOCK_SIZE);
     if (written < 0) {
-        throw new std::string(getFileErrorMessage("Write (append) failed.", errno));
+        throw std::runtime_error(getFileErrorMessage("Write (append) failed.", errno));
     }
     
     return offset / BLOCK_SIZE;

@@ -26,7 +26,9 @@ public:
 
     bool hasBlock(BlockId_t blockId);
 
-private:    
+private:
+    CachedBlockStore( const CachedBlockStore& rhs );
+    CachedBlockStore& operator=( const CachedBlockStore& rhs );
     Byte * loadBlock(BlockId_t blockId);
     
 private:
